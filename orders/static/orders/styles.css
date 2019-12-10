@@ -1,0 +1,132 @@
+body {
+  background: white url("images/anthony-duran-QbOvrpDU1KA-unsplash.jpg") no-repeat;
+  background-size: 100%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 9fr;
+  grid-template-areas:
+    "navbar navbar"
+    "board  order";
+  height: 100vh;
+}
+
+.navbar {
+  grid-area: navbar;
+  background: url("images/nav-back.png") repeat;
+  /* background: #564335; */
+}
+
+.nav-list {
+  list-style-type: none;
+}
+
+.nav-list li {
+  display: inline;
+}
+
+.nav-item a {
+  color: white;
+  font-size: 19px;
+  padding: 12px 10px;
+  text-decoration: none;
+}
+
+.nav-item a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.board {
+  grid-area: board;
+  margin-top: 30px;
+  margin-left: 40px;
+  width: 60%;
+  height: 80vh;
+  /* background: url("images/doska1.png") no-repeat; */
+  background: url("images/doska2.png") no-repeat;
+  background-size: 100%;
+  color: white;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  /* cursor:pointer; */
+}
+
+.toppings {
+  display: none;
+  position: absolute;
+  background-color: grey;
+  min-width: 260px;
+  padding: 10px 10px;
+  z-index: 1;
+}
+
+.dropdown:hover .toppings {
+  display: block;
+}
+
+.order {
+  grid-area: order;
+  margin-top: 30px;
+  margin-left: 140px;
+  width: 60%;
+  height: 80vh;
+  background-color: linen;
+  color: black;
+}
+
+.auth-data {
+  margin-left: 250px;
+}
+
+.my-btn {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 10px;
+  color: #120f0a;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari*/
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.my-btn1 {
+  background-color: transparent;
+  color: #f8f9fa;
+  border: 2px solid #f8f9fa;
+}
+
+.my-btn1 a {
+  color: #f8f9fa;
+}
+
+.my-btn1:hover {
+  background-color: #f8f9fa;
+  color: #120f0a;
+}
+
+.my-btn1 a:hover {
+  color: #120f0a;
+}
+
+/*
+.board {
+  margin-top: 30px;
+  margin-left: 25px;
+  width: 30%;
+  height: 70vh;
+  /* background: url("images/doska1.png") no-repeat; */
+/*  background: url("images/doska2.png") no-repeat;
+  background-size: 100%;
+  color: white;
+} */

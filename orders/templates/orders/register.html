@@ -1,0 +1,11 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+<h1>Registration</h1>
+
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    {{userform}}
+    <input type="submit">
+</form>
+{% endblock %}

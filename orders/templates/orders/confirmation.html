@@ -1,0 +1,23 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+  <h2>{{ user.username }}, please, confirm your order</h2>
+  <table>
+    {% for item in cart %}
+      <tr>
+      {% with product=item.product %}
+        <td>
+        {{ product.dish.category.name }}
+        {{ product.dish.name }}
+        {{ product.size.name }}
+        </td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.total_price }}</td>
+      {% endwith %}
+    {% endfor %}
+    <tr>
+      <td><b>Total:  ${{ cart.get_total_price }}</b></td>
+    </tr>
+  </table>
+  <button type="submit"><a href="{% url 'orders:order_create' user.id %}">Confirm</a></button>
+{% endblock %}

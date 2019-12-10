@@ -1,0 +1,130 @@
+{% extends "orders/base.html" %}
+
+{% block title %}{% if category %}{{category.name}}{% endif %}{% endblock %}
+
+{% block body %}
+  <div class="wrapper">
+    <header class="navbar">
+      <ul class="nav-list">
+        {% for category in categories %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+        </li>
+        {% endfor %}
+
+      <li class="auth-data">
+      {% if user.is_authenticated %}
+        <button type="button" class="my-btn my-btn1">{{ user.username }}</button>
+        <button type="button" class="my-btn my-btn1"><a href="{% url 'orders:logout' %}">Log out</a></button>
+      {% else %}
+        <button type="button" class="my-btn my-btn1"><a href="{% url 'orders:login' %}">Log in</a></button>
+        <button type="button" class="my-btn my-btn1"><a href="#">Register</a></button>
+      {% endif %}
+     </li>
+     </ul>
+    </header>
+
+    <div class="board">
+      <table id="menu-board">
+        {% if category %}
+          {% if category.sized == True %}
+            <tr>
+              <th></th>
+              <th>Small</th>
+              <th></th>
+              <th>Large</th>
+            </tr>
+            {% for dish in dishes %}
+            <tr>
+              <td>{{ dish.name }}</td>
+              {% for p in products_small %}
+                {% if dish.name == p.dish.name %}
+                  <td>{{ p.price }}</td>
+                  {% if category.name in "Regular Pizza,Sicilian Pizza" and p.dish.name != "Cheese"  %}
+                    <td class="dropdown">
+                      <button>+</button>
+                      <div class="toppings">
+                        {% for topping in toppings %}
+                        <form method="POST" action="{% url 'orders:cart_add' category.slug p.id %}"> {% csrf_token %}
+                        <input id="{{ topping.name }}" type="checkbox" name="check-top" value="{{ topping.name }}"/>
+                        <label class="top" for="{{ topping.name }}">{{ topping.name }}</label>
+                        {% endfor %}
+                        <button>Add</button>
+                        <!-- <button><a href="{% url 'orders:cart_add' category.slug p.id %}">Add</a></button> -->
+                        </form>
+                      </div>
+                    </td>
+                  {% else %}
+                  <td><button><a href="{% url 'orders:cart_add' category.slug p.id %}">+</a></button></td>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              {% for p in products_large %}
+                {% if dish.name == p.dish.name %}
+                  <td>{{ p.price }}</td>
+                  {% if category.name in "Regular Pizza,Sicilian Pizza" and p.dish.name != "Cheese"  %}
+                    <td class="dropdown">
+                      <button>+</button>
+                      <div class="toppings">
+                        {% for topping in toppings %}
+                        <input id="top" type="checkbox" name="check-top"/>
+                        <label for="top">{{ topping.name }}</label>
+                        {% endfor %}
+                        <button><a href="{% url 'orders:cart_add' category.slug p.id %}">Add</a></button>
+                      </div>
+                    </td>
+                  {% else %}
+                  <td><button><a href="{% url 'orders:cart_add' category.slug p.id %}">+</a></button></td>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          {% else %}
+            {% for p in products_unsized %}
+            <tr>
+              <td>{{ p.dish.name }}</td>
+              <td>{{ p.price }}</td>
+              <td><button><a href="{% url 'orders:cart_add' category.slug p.id %}">+</a></button></td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      </table>
+    </div>
+    <div class="order">
+      {% if cart %}
+        <table id="order-list">
+          <tr>
+            <th>Your order</th>
+          </tr>
+          {% for item in cart %}
+            {% for part in item.values %}
+            <tr>
+            {% with product=part.product %}
+              <td>
+              {{ product.dish.category.name }}
+              {{ product.dish.name }}
+              {{ product.size.name }}
+              </td>
+              <td>
+              {{ part.quantity }}
+              </td>
+              <td>${{ part.total_price }}</td>
+
+              <td><button><a href="#">-</a></button></td>
+            {% endwith %}
+            </tr>
+            {% endfor %}
+          {% endfor %}
+          <tr>
+            <td><b>Total:  ${{ cart.get_total_price }}</b></td>
+          </tr>
+        </table>
+        <button type="submit"><a href="{% url 'orders:order_confirm' category.slug %}">Place order</a></button>
+      {% endif %}
+     </div>
+
+  </div>
+
+{% endblock %}
